@@ -2,7 +2,7 @@ from ics import Calendar, Event
 from flask import Flask
 import requests, os, json, datetime
 
-app = Flask(__name__)
+
 
 """
 IN ORDER TO AVOID TO MUCH REQUESTS DURING DEVELOPMENT, I'VE CREATED A JSON FILE WITH THE RESPONSE OF THE API
@@ -72,11 +72,4 @@ def create_calendar(save_it: bool = False) -> Calendar:
         return "Calendar created"
     return calendar
 
-@app.route("/")
-def index():
-    create_calendar(save_it=True)
-    with open("calendar.ics", "r") as file:
-        return file.read()
-
-if __name__ == "__main__":
-    app.run(debug=False)
+create_calendar(save_it=True)
