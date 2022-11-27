@@ -1,0 +1,31 @@
+FROM debian:latest
+
+# Install python and pip lastest version
+RUN apt-get update && apt-get install -y python3 python3-pip nano cron sudo
+RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
+RUN cron
+
+USER root
+WORKDIR /app
+
+FROM debian:latest
+
+# Install python and pip lastest version
+RUN apt-get update && apt-get install -y python3 python3-pip nano cron sudo
+RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
+RUN cron
+
+USER root
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+ADD requirements.txt /app
+ADD website.py /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip3 install -r requirements.txt
+
+# Share the folder "output" that is on the host with the container
+VOLUME [ "/output" ]
+
+CMD [ "python3", "website.py" ]
